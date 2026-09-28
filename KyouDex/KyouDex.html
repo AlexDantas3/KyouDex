@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KyouDex</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="Syles.css">
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="top-left"><div class="avatar"><i></i></div><div class="dots"><i></i><i></i><i></i></div></div>
+    <div class="logo"><img src="logo-kyoudex.png" alt="KyouDex"></div>
+    <div class="online">Sistema online</div>
+  </header>
+
+  <nav class="crumbs">
+    <a class="home" href="KyouDex.html">Início <span class="seta">→</span></a>
+  </nav>
+
+  <main class="body">
+    <aside class="side">
+      <h4><span>Filtros</span><span>⚙</span></h4>
+      <label class="search">🔍︎<input id="busca" type="text" placeholder="Nome ou N°"></label>
+      <div class="lbl">Região</div>
+      <div class="regs-wrap"><div class="regs" id="regioes"></div></div>
+      <div class="lbl" style="border:0;padding-top:0">Tipagem</div>
+      <div class="chips" id="tipos"></div>
+      <div class="foot">
+        <small>Capturados</small>
+        <b id="contador">000</b>
+        <em>El 1 Ger 2001/Hard</em>
+      </div>
+    </aside>
+
+    <section>
+      <div class="head">
+        <div>
+          <div class="eyebrow" id="eyebrow">Arquivo nacional // Kanto</div>
+          <h1>Pokémon registrados</h1>
+        </div>
+        <div class="tools">
+          <label class="sort">Ordem
+            <select id="ordem">
+              <option value="asc">N° crescente</option>
+              <option value="desc">N° decrescente</option>
+              <option value="nome">Nome (A–Z)</option>
+            </select>
+          </label>
+          <button class="view" id="visao" title="Alternar visualização">⊞</button>
+        </div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </section>
+  </main>
+
+  <footer class="bottom">
+    <div class="bl"><div class="ring">ⓘ</div><div>Sessão principal<small>12:00 • 13:00</small></div></div>
+    <nav><span>Pesquisar</span><span>Mapa</span><span>Ajuda</span></nav>
+    <div class="br"><div>KyouDex 1.0<small>Studio 2026</small></div><div class="pw">⏻</div></div>
+  </footer>
+</div>
+
+<script src="Comum.js"></script>
+<script src="Script.js"></script>
+</body>
+</html>

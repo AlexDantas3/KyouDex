@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KyouDex — Detalhes</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="Syles.css">
+<link rel="stylesheet" href="Detalhes.css">
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="top-left"><div class="avatar"><i></i></div><div class="dots"><i></i><i></i><i></i></div></div>
+    <div class="logo"><img src="logo-kyoudex.png" alt="KyouDex"></div>
+    <div class="online">Sistema online</div>
+  </header>
+
+  <nav class="crumbs">
+    <a class="home" href="KyouDex.html">Início <span class="seta">→</span></a>
+  </nav>
+
+  <main class="detalhe">
+    <!-- Painel esquerdo -->
+    <aside class="esq">
+      <h4>Busca rápida</h4>
+      <form class="busca" id="formBusca">
+        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="q" type="text" placeholder="Nome (inglês) ou N°" autocomplete="off">
+      </form>
+      <small class="erro" id="erroBusca" hidden>Pokémon não encontrado.</small>
+      <h4 class="sub">Identificar</h4>
+      <div class="duo">
+        <button class="bt escuro" id="scan" type="button">
+          <svg viewBox="0 0 24 24" width="16" height="16"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3M3 12h18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Scan
+        </button>
+        <a class="bt claro" href="KyouDex.html">
+          <svg viewBox="0 0 24 24" width="16" height="16"><rect x="4" y="4" width="16" height="16" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="1.6"/></svg>Grade
+        </a>
+      </div>
+      <div class="regiao-box">
+        <small>Região ativa</small>
+        <div class="linha"><b id="regNome">Kanto</b><span id="regFaixa">001–151</span></div>
+        <p>Banco de dados original conectado e sincronizado.</p>
+      </div>
+      <div class="dpad" aria-label="Mover cursor">
+        <button id="up" title="+10" aria-label="Avançar 10">▲</button>
+        <button id="left" title="Anterior" aria-label="Anterior">◀</button>
+        <span></span>
+        <button id="right" title="Próximo" aria-label="Próximo">▶</button>
+        <button id="down" title="−10" aria-label="Voltar 10">▼</button>
+      </div>
+      <small class="dlabel">Mover cursor</small>
+    </aside>
+
+    <!-- Painel central -->
+    <section class="centro" id="centro">
+      <div class="c-top">
+        <span class="num" id="num">N° 000</span>
+        <span class="trilha" id="trilha">Dex / Pokémon / —</span>
+        <div class="acoes">
+          <button id="fav" type="button" title="Favoritar" aria-pressed="false"><svg viewBox="0 0 24 24" width="15" height="15"><path d="M12 20s-7-4.6-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.4-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+          <button id="cap" class="pokebola" type="button" title="Marcar como capturado" aria-pressed="false"></button>
+          <button id="share" type="button" title="Copiar link"><svg viewBox="0 0 24 24" width="15" height="15"><circle cx="6" cy="12" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="6" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="18" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.2 11l7.6-4M8.2 13l7.6 4" stroke="currentColor" stroke-width="1.8"/></svg></button>
+        </div>
+      </div>
+      <div class="palco">
+        <span class="ok">● Registro validado</span>
+        <div class="pos">Posição regional<b id="pos">000/000</b></div>
+        <div class="alvo">
+          <i class="anel a1"></i><i class="anel a2"></i><i class="eixo ex"></i><i class="eixo ey"></i>
+          <img id="foto" alt="" width="180" height="180">
+        </div>
+      </div>
+      <div class="info">
+        <div class="ident">
+          <h1 id="nome">Carregando…</h1>
+          <small class="genus" id="genus">&nbsp;</small>
+          <div class="tags" id="tags"></div>
+          <div class="medidas">
+            <div><small>Altura</small><b id="altura">—</b></div>
+            <div><small>Peso</small><b id="peso">—</b></div>
+            <div><small>Gênero</small><b id="genero">—</b></div>
+          </div>
+        </div>
+        <div class="stats">
+          <h4>Base stats <span id="total">— pts</span></h4>
+          <div id="barras"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Painel direito -->
+    <aside class="dir">
+      <h4>Sinal sonoro <span class="live">Live</span></h4>
+      <div class="onda" id="onda"><small>Áudio / Grito</small><div class="barras-onda" id="barrasOnda"></div><small id="statusAudio">Aguardando</small></div>
+      <div class="duo">
+        <button class="bt vermelho" id="som" type="button"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Ouvir</button>
+        <button class="bt branco" id="shiny" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M10 3l1.8 5.2L17 10l-5.2 1.8L10 17l-1.8-5.2L3 10l5.2-1.8L10 3zM18 14l.9 2.6L21.5 17.5l-2.6.9L18 21l-.9-2.6-2.6-.9 2.6-.9L18 14z" fill="currentColor"/></svg><span id="shinyTxt">Shiny</span></button>
+      </div>
+      <div class="protocolo">
+        <small id="protoTitulo">Protocolo #000</small>
+        <p id="descricao">—</p>
+        <em id="protoRodape">—</em>
+      </div>
+      <div class="nav-par">
+        <button id="prev" type="button" aria-label="Anterior">‹</button>
+        <button id="next" type="button" aria-label="Próximo" class="verm">›</button>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="bottom">
+    <div class="bl"><div class="ring">ⓘ</div><div>Sessão principal<small>12:00 • 13:00</small></div></div>
+    <nav><span>Pesquisar</span><span>Mapa</span><span>Ajuda</span></nav>
+    <div class="br"><div>KyouDex 1.0<small>Studio 2026</small></div><div class="pw">⏻</div></div>
+  </footer>
+</div>
+
+<script src="Comum.js"></script>
+<script src="Detalhes.js"></script>
+</body>
+</html>
