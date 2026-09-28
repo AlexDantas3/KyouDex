@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="logo-kyoudex.png" alt="KyouDex" width="260">
+  <img width="1184" height="224" alt="logo-kyoudex" src="https://github.com/user-attachments/assets/1d041559-47db-4e41-ab9a-6385c7d29e4f" />
+
 </p>
 
 <p align="center">
