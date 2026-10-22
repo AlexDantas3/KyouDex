@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<script>try{var d=document.documentElement;d.dataset.tema=localStorage.getItem('kyoudex:tema')||'light';var a=localStorage.getItem('kyoudex:animacoes');d.dataset.animacoes=a||'on';var v=JSON.parse(localStorage.getItem('kyoudex:cor-vars'));if(v){d.style.setProperty('--red',v.a);d.style.setProperty('--red-dark',v.b);d.style.setProperty('--red-soft',v.c)}}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KyouDex — Detalhes</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -13,7 +14,12 @@
   <header class="top">
     <div class="top-left"><div class="avatar"><i></i></div><div class="dots"><i></i><i></i><i></i></div></div>
     <div class="logo"><img src="logo-kyoudex.png" alt="KyouDex"></div>
-    <div class="online">Sistema online</div>
+    <div class="top-right">
+      <button class="config-btn" id="config" type="button" aria-label="Abrir configurações" aria-haspopup="dialog" aria-expanded="false" title="Configurações">
+        <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="online">Sistema online</div>
+    </div>
   </header>
 
   <nav class="crumbs">
@@ -113,7 +119,7 @@
   <footer class="bottom">
     <div class="bl"><div class="ring">ⓘ</div><div>Sessão principal<small>12:00 • 13:00</small></div></div>
     <nav><span>Pesquisar</span><span>Mapa</span><span>Ajuda</span></nav>
-    <div class="br"><div>KyouDex 1.0<small>Studio 2026</small></div><div class="pw">⏻</div></div>
+    <div class="br"><div class="usuario" id="usuarioNome">Visitante</div><div>KyouDex 1.0<small>Studio 2026</small></div><button class="pw" id="conta" type="button" aria-haspopup="dialog" aria-label="Entrar ou sair da conta" title="Entrar">⏻</button></div>
   </footer>
 </div>
 

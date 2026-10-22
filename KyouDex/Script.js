@@ -5,11 +5,14 @@ const $ = s => document.querySelector(s);
 
 /* ---------- Capturas (salvas no navegador) ---------- */
 const capturados = new Set((() => { try { return JSON.parse(localStorage.getItem(CHAVE_CAPTURAS)) || []; } catch { return []; } })());
+const lerIds = chave => { try { return JSON.parse(localStorage.getItem(chave)) || []; } catch { return []; } };
+const favoritos = new Set(lerIds(CHAVE_FAVORITOS));
+const salvarFavoritos = () => { try { localStorage.setItem(CHAVE_FAVORITOS, JSON.stringify([...favoritos])); } catch {} };
 const salvarCapturas = () => { try { localStorage.setItem(CHAVE_CAPTURAS, JSON.stringify([...capturados])); } catch {} };
 const atualizarContador = () => { $('#contador').textContent = String(capturados.size).padStart(3,'0'); };
 
 /* ---------- Estado ---------- */
-const estado = {regiao:'Kanto', tipo:null, busca:'', ordem:'asc', lista:false};
+const estado = {soFav:false, captura:'todos', regiao:'Kanto', tipo:null, busca:'', ordem:'asc', lista:false};
 const pad = n => String(n).padStart(4,'0');
 
 /* ---------- Filtros laterais ---------- */
@@ -35,6 +38,7 @@ function cartao(p){
     <h3>${p.nome}</h3>
     <div class="photo" data-foto="${p.id}">${foto}</div>
     <div class="tags">${tags}</div>
+    <button class="favorito ${favoritos.has(p.id)?'on':''}" data-fav="${p.id}" aria-pressed="${favoritos.has(p.id)}" title="${favoritos.has(p.id)?'Remover dos favoritos':'Favoritar'}">${CORACAO}</button>
     <button class="pokebola ${capturados.has(p.id)?'capturado':''}" data-cap="${p.id}" aria-pressed="${capturados.has(p.id)}" title="${capturados.has(p.id)?'Capturado':'Marcar como capturado'}">${POKEBOLA}</button>
   </article>`;
 }
@@ -43,12 +47,15 @@ function render(){
   let lista = pokemons.filter(p=>
     (estado.regiao==='Todas' || p.regiao===estado.regiao) &&
     (!estado.tipo || p.tipos.includes(estado.tipo)) &&
+    (!estado.soFav || favoritos.has(p.id)) &&
+    (estado.captura==='todos' || capturados.has(p.id) === (estado.captura==='capturados')) &&
     (!estado.busca || p.nome.toLowerCase().includes(estado.busca) || String(p.id).includes(estado.busca.replace(/\D/g,'')||'§')));
   lista.sort((a,b)=> estado.ordem==='nome' ? a.nome.localeCompare(b.nome) : estado.ordem==='desc' ? b.id-a.id : a.id-b.id);
   const ocupado = Object.keys(carregando).length > 0;
   $('#grid').innerHTML = lista.length ? lista.map(cartao).join('')
     : ocupado ? '<div class="vazio">Carregando Pokémon…</div>'
     : erroCarga ? '<div class="vazio">Não foi possível carregar os dados da PokéAPI.<br><button id="tentar">Tentar novamente</button></div>'
+    : estado.soFav ? '<div class="vazio">Nenhum favorito por aqui. Toque no coração de um cartão para favoritar.</div>'
     : '<div class="vazio">Nenhum Pokémon encontrado. Ajuste os filtros.</div>';
   $('#grid').classList.toggle('list', estado.lista);
   $('#eyebrow').textContent = `Arquivo nacional // ${estado.regiao==='Todas' ? 'Todas as regiões' : estado.regiao}`;
@@ -59,6 +66,24 @@ function render(){
 $('#regioes').addEventListener('click',e=>{const b=e.target.closest('[data-r]'); if(b){estado.regiao=b.dataset.r; render(); carregar(estado.regiao);}});
 $('#tipos').addEventListener('click',e=>{const b=e.target.closest('[data-t]'); if(b){estado.tipo = estado.tipo===b.dataset.t ? null : b.dataset.t; render();}});
 $('#busca').addEventListener('input',e=>{estado.busca=e.target.value.trim().toLowerCase(); render();});
+$('#seg').addEventListener('click',e=>{
+  const b = e.target.closest('[data-c]'); if(!b) return;
+  estado.captura = b.dataset.c;
+  document.querySelectorAll('#seg button').forEach(x=>{ const on = x===b; x.classList.toggle('on',on); x.setAttribute('aria-pressed',on); });
+  render();
+});
+$('#soFav').addEventListener('click',e=>{
+  estado.soFav = !estado.soFav;
+  e.currentTarget.setAttribute('aria-pressed', estado.soFav);
+  render();
+});
+// ao voltar da tela de detalhes (cache do navegador), relê capturas e favoritos
+window.addEventListener('pageshow',e=>{
+  if(!e.persisted) return;
+  capturados.clear(); lerIds(CHAVE_CAPTURAS).forEach(id=>capturados.add(id));
+  favoritos.clear(); lerIds(CHAVE_FAVORITOS).forEach(id=>favoritos.add(id));
+  atualizarContador(); render();
+});
 $('#ordem').addEventListener('change',e=>{estado.ordem=e.target.value; render();});
 $('#visao').addEventListener('click',()=>{estado.lista=!estado.lista; render();});
 
@@ -115,17 +140,30 @@ async function carregar(regiao){
 $('#grid').addEventListener('keydown',e=>{ const c = e.target.closest('.card'); if(c && e.target===c && e.key==='Enter') location.href = 'Detalhes.html?id=' + c.dataset.id; });
 $('#grid').addEventListener('click',e=>{
   if(e.target.id==='tentar') return carregar(estado.regiao);
+  const f = e.target.closest('[data-fav]');
+  if(f){
+    const id = Number(f.dataset.fav), agora = !favoritos.has(id);
+    agora ? favoritos.add(id) : favoritos.delete(id);
+    salvarFavoritos();
+    f.classList.toggle('on', agora);
+    f.setAttribute('aria-pressed', agora);
+    f.title = agora ? 'Remover dos favoritos' : 'Favoritar';
+    if(agora) animarFavorito(f);
+    if(estado.soFav) render(); // sai da lista se deixou de ser favorito
+    return;
+  }
   const b = e.target.closest('[data-cap]');
   if(!b){ const c = e.target.closest('.card'); if(c) location.href = 'Detalhes.html?id=' + c.dataset.id; return; }
   const id = Number(b.dataset.cap);
   const agora = !capturados.has(id);
   agora ? capturados.add(id) : capturados.delete(id);
   salvarCapturas();
+  if(agora) animar(b, 'pulo', 700); // antes de trocar a cor: a cor muda no meio do giro
   b.classList.toggle('capturado', agora);
-  if(agora){ b.classList.add('pulo'); setTimeout(()=>b.classList.remove('pulo'), 400); }
   b.setAttribute('aria-pressed', agora);
   b.title = agora ? 'Capturado' : 'Marcar como capturado';
   atualizarContador();
+  if(estado.captura !== 'todos') render(); // o cartão sai da lista se deixou de combinar com o filtro
 });
 
 atualizarContador();

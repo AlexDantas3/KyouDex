@@ -162,20 +162,21 @@ function alternarCaptura(){
   const c = capturas(), agora = !c.has(atual.id);
   agora ? c.add(atual.id) : c.delete(atual.id);
   try { localStorage.setItem(CHAVE_CAPTURAS, JSON.stringify([...c])); } catch {}
+  if(agora) animar($('#cap'), 'pulo', 700); // antes de trocar a cor: a cor muda no meio do giro
   mostrarCaptura(agora);
-  if(agora){ $('#cap').classList.add('pulo'); setTimeout(() => $('#cap').classList.remove('pulo'), 400); }
 }
 $('#cap').innerHTML = POKEBOLA;
 $('#cap').onclick = alternarCaptura;
 
 /* ---------- Favoritos e compartilhar ---------- */
-const favoritos = () => { try { return new Set(JSON.parse(localStorage.getItem('kyoudex:favoritos')) || []); } catch { return new Set(); } };
+const favoritos = () => { try { return new Set(JSON.parse(localStorage.getItem(CHAVE_FAVORITOS)) || []); } catch { return new Set(); } };
 function alternarFavorito(){
   if(!atual) return;
   const f = favoritos();
   f.has(atual.id) ? f.delete(atual.id) : f.add(atual.id);
-  try { localStorage.setItem('kyoudex:favoritos', JSON.stringify([...f])); } catch {}
+  try { localStorage.setItem(CHAVE_FAVORITOS, JSON.stringify([...f])); } catch {}
   $('#fav').setAttribute('aria-pressed', f.has(atual.id));
+  if(f.has(atual.id)) animarFavorito($('#fav'));
 }
 async function compartilhar(){
   const t = $('#trilha'), antes = t.textContent;
